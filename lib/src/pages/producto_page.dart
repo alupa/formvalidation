@@ -148,7 +148,7 @@ class _ProductoPageState extends State<ProductoPage> {
 
   Widget _mostrarFoto() {
     if(producto.fotoUrl != null)
-     return FadeInImage(
+      return FadeInImage(
                image: NetworkImage(producto.fotoUrl),
                placeholder: AssetImage('assets/jar-loading.gif'),
                height: 250.0,
