@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:formvalidation/src/prefs/preferencias_usuario.dart';
 import 'package:http/http.dart' as http;
@@ -31,13 +32,16 @@ class ProductosProvider {
     return true;
   }
 
-  Future<List<ProductoModel>> cargarProductos() async {
+  Future<List<ProductoModel>> cargarProductos(context) async {
     final url = '$_url/productos.json?auth=${_prefs.token}';
     final resp = await http.get(url);
     final Map<String, dynamic> decodedData = json.decode(resp.body);
     final List<ProductoModel> productos = new List();
 
-    if(decodedData == null) return [];
+    if(decodedData == null || decodedData['error'] != null){
+      Navigator.pushReplacementNamed(context, 'login');
+      return [];
+    }
     decodedData.forEach((id, prod){
       final prodTemp = ProductoModel.fromJson(prod);
       prodTemp.id = id;
